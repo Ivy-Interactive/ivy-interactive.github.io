@@ -36,13 +36,22 @@
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "USD",
+          "availability": "https://schema.org/InStock",
+          "description": "100% Free and Source-Available under FSL-1.1-ALv2"
         }
       },
       {
         "@type": "Organization",
         "name": "Ivy Interactive",
+        "legalName": "Ivy Interactive AB",
         "url": "https://ivy.app",
+        "brand": {
+          "@type": "Brand",
+          "name": "Ivy Interactive",
+          "alternateName": "Ivy"
+        },
+        "description": "Ivy Interactive builds developer tools and autonomous agent execution infrastructure for modern software engineering.",
         "sameAs": [
           "https://github.com/Ivy-Interactive",
           "https://github.com/Ivy-Interactive/Ivy-Tendril-V2"
@@ -83,6 +92,7 @@
   <header>
     <nav aria-label="Main Navigation">
       <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/">Home</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers">Developer Portal</a>
       <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction">Documentation</a>
       <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/about">About</a>
       <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/contact">Contact</a>
@@ -101,7 +111,21 @@
       </p>
       <p>
         <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction" class="hero-btn">Explore Documentation &rarr;</a>
+        <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers" class="hero-btn" style="background:#2563eb;margin-left:0.5rem">Developer Portal &rarr;</a>
       </p>
+    </section>
+
+    <section>
+      <h2>Developer Portal & Fast Integrations</h2>
+      <p>
+        Whether configuring coding agents or integrating Tendril into your CI/CD pipelines, start with our developer resources:
+      </p>
+      <ul>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers">Developer Portal</a> — Quickstart, self-serve keys, sandbox daemon, and rate limits.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.json">OpenAPI 3.1.0 Specification</a> — Machine-readable REST API schema with typed RFC 9457 error models.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/mcp.json">Model Context Protocol (MCP) Manifest</a> — Tools and Streamable HTTP endpoints.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/llms.txt">llms.txt</a> — Machine-readable guidance optimized for LLMs.</li>
+      </ul>
     </section>
 
     <section>

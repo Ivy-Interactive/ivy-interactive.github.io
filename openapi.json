@@ -3,9 +3,9 @@
   "info": {
     "title": "Ivy Tendril Daemon REST API",
     "version": "2.0.0",
-    "description": "Local and remote orchestration API for Ivy Tendril agentic software factory.",
+    "description": "Local and remote orchestration API for Ivy Tendril agentic software factory.\n\n### API Versioning and Deprecation Policy\n- **Versioning Policy**: Tendril uses URL-based API versioning (`/api/v1`).\n- **Deprecation Signaling**: Deprecated endpoints return standard RFC 8594 `Deprecation` and `Sunset` headers.\n- **Sunset Timeline**: Deprecated API endpoints are supported for at least 180 days after deprecation notice.\n- **Error Responses**: All 4xx and 5xx errors return structured RFC 9457 Problem Details (`application/problem+json`) with machine-readable error codes and resolution hints.\n- **Rate Limiting**: Responses include standard RFC rate-limit headers (`RateLimit-Limit`, `RateLimit-Remaining`, `RateLimit-Reset`, and `Retry-After` on 429).\n- **Developer Portal**: https://ivy-interactive.github.io/Ivy-Tendril-V2/developers",
     "contact": {
-      "name": "Ivy Interactive",
+      "name": "Ivy Interactive Support",
       "email": "support@ivy.app",
       "url": "https://ivy.app"
     }
@@ -13,15 +13,57 @@
   "servers": [
     {
       "url": "http://127.0.0.1:5010",
-      "description": "Local daemon"
+      "description": "Local daemon instance"
     }
   ],
   "paths": {
     "/api/v1/plans": {
       "get": {
         "summary": "List plans",
-        "description": "Returns all plans in the current workspace with state and branch information.",
+        "description": "Returns all execution plans in the active workspace with state and branch information.",
         "operationId": "listPlans",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter plans by execution state",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "Draft",
+                "Approved",
+                "Running",
+                "Completed",
+                "Failed",
+                "Icebox"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of plans to return",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "minimum": 1,
+              "maximum": 200
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "description": "Pagination offset",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
         "security": [
           {
             "OAuth2": [
@@ -31,7 +73,18 @@
         ],
         "responses": {
           "200": {
-            "description": "List of plans",
+            "description": "List of plans matching query parameters",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -42,12 +95,24 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       },
       "post": {
         "summary": "Create plan",
-        "description": "Creates a new plan for agent execution.",
+        "description": "Creates a new execution plan for autonomous agent worktree execution.",
         "operationId": "createPlan",
         "security": [
           {
@@ -69,6 +134,17 @@
         "responses": {
           "201": {
             "description": "Plan created successfully",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -76,20 +152,33 @@
                 }
               }
             }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
     },
     "/api/v1/plans/{id}": {
       "get": {
-        "summary": "Get plan",
-        "description": "Returns full plan details including annotations and verification status.",
+        "summary": "Get plan details",
+        "description": "Returns full plan details including annotations, logs, and verification status.",
         "operationId": "getPlan",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
+            "description": "Unique plan ID (slug or ULID)",
             "schema": {
               "type": "string"
             }
@@ -105,6 +194,17 @@
         "responses": {
           "200": {
             "description": "Plan details",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -112,6 +212,91 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{id}/run": {
+      "post": {
+        "summary": "Run plan",
+        "description": "Triggers immediate agent execution of an approved plan in an isolated git worktree.",
+        "operationId": "runPlan",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Unique plan ID to execute",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "security": [
+          {
+            "OAuth2": [
+              "plans:write"
+            ]
+          }
+        ],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunPlanRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Plan execution triggered",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -121,6 +306,17 @@
         "summary": "List worktrees",
         "description": "Inspect active git worktrees and agent isolation environments.",
         "operationId": "listWorktrees",
+        "parameters": [
+          {
+            "name": "clean",
+            "in": "query",
+            "required": false,
+            "description": "Filter only clean worktrees without uncommitted modifications",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "security": [
           {
             "OAuth2": [
@@ -131,6 +327,17 @@
         "responses": {
           "200": {
             "description": "Active worktrees",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
             "content": {
               "application/json": {
                 "schema": {
@@ -141,6 +348,134 @@
                 }
               }
             }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create worktree",
+        "description": "Creates an isolated git worktree branch for agent development.",
+        "operationId": "createWorktree",
+        "security": [
+          {
+            "OAuth2": [
+              "worktrees:write"
+            ]
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateWorktreeRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Worktree created successfully",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Worktree"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
+          }
+        }
+      }
+    },
+    "/api/v1/verification/run": {
+      "post": {
+        "summary": "Run verification gates",
+        "description": "Executes automated compiler, linter, unit test, and visual verification suites.",
+        "operationId": "runVerification",
+        "security": [
+          {
+            "OAuth2": [
+              "plans:write"
+            ]
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunVerificationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Verification results",
+            "headers": {
+              "RateLimit-Limit": {
+                "$ref": "#/components/headers/RateLimit-Limit"
+              },
+              "RateLimit-Remaining": {
+                "$ref": "#/components/headers/RateLimit-Remaining"
+              },
+              "RateLimit-Reset": {
+                "$ref": "#/components/headers/RateLimit-Reset"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalServerError"
           }
         }
       }
@@ -165,6 +500,50 @@
         }
       }
     },
+    "headers": {
+      "RateLimit-Limit": {
+        "description": "The maximum number of requests allowed in the current time window.",
+        "schema": {
+          "type": "integer",
+          "example": 120
+        }
+      },
+      "RateLimit-Remaining": {
+        "description": "The number of remaining requests allowed in the current time window.",
+        "schema": {
+          "type": "integer",
+          "example": 119
+        }
+      },
+      "RateLimit-Reset": {
+        "description": "The number of seconds until the current rate limit window resets.",
+        "schema": {
+          "type": "integer",
+          "example": 60
+        }
+      },
+      "Retry-After": {
+        "description": "The number of seconds an agent must wait before retrying a throttled request.",
+        "schema": {
+          "type": "integer",
+          "example": 30
+        }
+      },
+      "Deprecation": {
+        "description": "RFC 8594 date or boolean indicating endpoint deprecation status.",
+        "schema": {
+          "type": "string",
+          "example": "@1767225600"
+        }
+      },
+      "Sunset": {
+        "description": "RFC 8594 date indicating when the deprecated API endpoint will be permanently retired.",
+        "schema": {
+          "type": "string",
+          "example": "Wed, 31 Dec 2026 23:59:59 GMT"
+        }
+      }
+    },
     "schemas": {
       "Plan": {
         "type": "object",
@@ -175,10 +554,12 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "description": "Unique plan ID"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Title of the plan"
           },
           "state": {
             "type": "string",
@@ -189,16 +570,19 @@
               "Completed",
               "Failed",
               "Icebox"
-            ]
+            ],
+            "description": "Current lifecycle state"
           },
           "branch": {
-            "type": "string"
+            "type": "string",
+            "description": "Associated git worktree branch"
           },
           "annotations": {
             "type": "array",
             "items": {
               "type": "string"
-            }
+            },
+            "description": "Human and agent annotations"
           }
         }
       },
@@ -209,10 +593,12 @@
         ],
         "properties": {
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Short title of the plan"
           },
           "description": {
-            "type": "string"
+            "type": "string",
+            "description": "Detailed specification or prompt for the agent"
           },
           "agent": {
             "type": "string",
@@ -222,7 +608,18 @@
               "copilot",
               "opencode",
               "gemini"
-            ]
+            ],
+            "description": "Agent execution engine"
+          }
+        }
+      },
+      "RunPlanRequest": {
+        "type": "object",
+        "properties": {
+          "verification_profile": {
+            "type": "string",
+            "description": "Verification profile to enforce upon completion",
+            "example": "standard"
           }
         }
       },
@@ -230,17 +627,331 @@
         "type": "object",
         "required": [
           "path",
-          "branch"
+          "branch",
+          "clean"
         ],
         "properties": {
           "path": {
-            "type": "string"
+            "type": "string",
+            "description": "Filesystem path to the isolated worktree"
           },
           "branch": {
-            "type": "string"
+            "type": "string",
+            "description": "Git branch name"
           },
           "clean": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the working copy has uncommitted changes"
+          }
+        }
+      },
+      "CreateWorktreeRequest": {
+        "type": "object",
+        "required": [
+          "branch"
+        ],
+        "properties": {
+          "branch": {
+            "type": "string",
+            "description": "Git branch name to checkout"
+          },
+          "base_ref": {
+            "type": "string",
+            "description": "Base commit or branch to branch from",
+            "default": "HEAD"
+          }
+        }
+      },
+      "RunVerificationRequest": {
+        "type": "object",
+        "required": [
+          "plan_id"
+        ],
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "description": "Identifier of the plan to verify"
+          },
+          "suite": {
+            "type": "string",
+            "enum": [
+              "all",
+              "unit",
+              "lint",
+              "visual"
+            ],
+            "default": "all",
+            "description": "Test suite to execute"
+          }
+        }
+      },
+      "VerificationResult": {
+        "type": "object",
+        "required": [
+          "success",
+          "plan_id"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether all verification checks passed"
+          },
+          "plan_id": {
+            "type": "string",
+            "description": "Identifier of the verified plan"
+          },
+          "exit_code": {
+            "type": "integer",
+            "description": "Process exit code from test runner"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Detailed output or summary of test results"
+          }
+        }
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "description": "RFC 9457 Problem Details object with machine-readable codes and remediation hints for agents.",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "code"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI reference identifying the problem type.",
+            "example": "https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/rest#errors"
+          },
+          "title": {
+            "type": "string",
+            "description": "Short human-readable summary of the problem type.",
+            "example": "Resource Not Found"
+          },
+          "status": {
+            "type": "integer",
+            "description": "HTTP status code.",
+            "example": 404
+          },
+          "detail": {
+            "type": "string",
+            "description": "Explanation specific to this error occurrence.",
+            "example": "Plan with ID 'plan-xyz' was not found in the active workspace."
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri",
+            "description": "URI identifying the specific error instance."
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code for agent error handling.",
+            "example": "PLAN_NOT_FOUND"
+          },
+          "hint": {
+            "type": "string",
+            "description": "Remediation guidance for autonomous agents.",
+            "example": "Query GET /api/v1/plans to find valid plan IDs or submit a new plan with POST /api/v1/plans."
+          },
+          "documentation_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://ivy-interactive.github.io/Ivy-Tendril-V2/developers"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Structured JSON error response model for agents unable to parse HTML.",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code.",
+            "example": "BAD_REQUEST"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error description.",
+            "example": "The request body is missing the required 'title' field."
+          },
+          "hint": {
+            "type": "string",
+            "description": "Suggested corrective action.",
+            "example": "Provide a non-empty string in the 'title' property."
+          },
+          "documentation_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://ivy-interactive.github.io/Ivy-Tendril-V2/developers"
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Bad Request - The request parameters or body failed schema validation.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Unauthorized": {
+        "description": "Unauthorized - Missing or invalid Bearer token / API key.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "Forbidden": {
+        "description": "Forbidden - The credential does not possess the required scope.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not Found - The requested resource does not exist in the active workspace.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Too Many Requests - Rate limit exceeded. Agents should inspect Retry-After and back off.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          },
+          "Retry-After": {
+            "$ref": "#/components/headers/Retry-After"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
+          }
+        }
+      },
+      "InternalServerError": {
+        "description": "Internal Server Error - Unexpected server failure in daemon.",
+        "headers": {
+          "RateLimit-Limit": {
+            "$ref": "#/components/headers/RateLimit-Limit"
+          },
+          "RateLimit-Remaining": {
+            "$ref": "#/components/headers/RateLimit-Remaining"
+          },
+          "RateLimit-Reset": {
+            "$ref": "#/components/headers/RateLimit-Reset"
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/ProblemDetails"
+            }
+          },
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            }
           }
         }
       }

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Portal · Ivy Tendril</title>
+  <meta name="description" content="Ivy Tendril Developer Portal: Quickstarts, REST & WebSocket APIs, Model Context Protocol (MCP) server, self-serve API keys, and sandbox environment.">
+  <link rel="canonical" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers">
+  <link rel="alternate" type="text/markdown" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers/index.md" title="Developer Portal Markdown">
+  <meta property="og:title" content="Developer Portal · Ivy Tendril">
+  <meta property="og:description" content="Quickstart guides, REST API, Model Context Protocol (MCP), self-serve API keys, and sandbox environment for Ivy Tendril.">
+  <meta property="og:image" content="https://ivy-interactive.github.io/Ivy-Tendril-V2/og-image.png">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Ivy Tendril Developer Portal",
+    "description": "Comprehensive developer guide for integrating autonomous coding agents with Ivy Tendril via MCP, REST, CLI, and WebSockets.",
+    "author": {
+      "@type": "Organization",
+      "name": "Ivy Interactive",
+      "legalName": "Ivy Interactive AB",
+      "url": "https://ivy.app"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ivy Interactive",
+      "legalName": "Ivy Interactive AB",
+      "url": "https://ivy.app"
+    }
+  }
+  </script>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #ffffff; }
+    h1, h2, h3 { color: #111827; }
+    h1 { font-size: 2.25rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
+    h3 { font-size: 1.15rem; font-weight: 600; margin-top: 1.25rem; }
+    a { color: #2563eb; text-decoration: underline; text-underline-offset: 3px; }
+    nav a { margin-right: 1.25rem; font-weight: 500; }
+    header { border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+    pre { background: #f3f4f6; padding: 1rem; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; border: 1px solid #e5e7eb; }
+    code { background: #f3f4f6; padding: 0.15rem 0.35rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+    .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.25rem; margin: 1.25rem 0; }
+    footer { border-top: 1px solid #e5e7eb; padding-top: 1.5rem; margin-top: 3rem; font-size: 0.875rem; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Main Navigation">
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/">Home</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers">Developer Portal</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction">Documentation</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/about">About</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/contact">Contact</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/privacy">Privacy Policy</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/llms.txt">llms.txt</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/sitemap.xml">Sitemap</a>
+    </nav>
+    <h1>Ivy Tendril Developer Portal</h1>
+    <p>Everything you need to integrate, orchestrate, and build on Ivy Tendril's agentic software factory.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Quickstart & Local Setup</h2>
+      <p>
+        Ivy Tendril runs a high-performance local daemon and desktop environment written in Rust and Tauri v2.
+        Developers and autonomous agents can interface with Tendril through standard protocols:
+      </p>
+      <div class="card">
+        <h3>1. Model Context Protocol (MCP)</h3>
+        <p>Connect Claude Desktop, ChatGPT, or custom agent frameworks to the built-in MCP server:</p>
+        <pre><code># Stdio transport:
+tendril mcp
+
+# Streamable HTTP / SSE transport (via background daemon):
+http://127.0.0.1:5010/mcp</code></pre>
+        <p>Discovery endpoint: <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/mcp.json">/.well-known/mcp.json</a> | Documentation: <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp">MCP Guide</a></p>
+      </div>
+      <div class="card">
+        <h3>2. Tendril Command Line Interface (CLI)</h3>
+        <p>Supervise and execute plans directly from your shell:</p>
+        <pre><code># Start the background daemon
+tendril run
+
+# Submit and run a plan in an isolated git worktree
+tendril plan create "Add OAuth2 PKCE flow"
+tendril plan run &lt;plan-id&gt;
+
+# Check environment health
+tendril doctor</code></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Self-Serve API Keys & Authentication</h2>
+      <div class="card">
+        <h3>Zero Friction, Local-First Key Management</h3>
+        <p>
+          Ivy Tendril is <strong>100% Free and Source-Available</strong> under the Functional Source License (FSL-1.1-ALv2).
+          There are no credit cards, paywalls, or "contact sales" forms.
+        </p>
+        <p>
+          Generate and store API keys directly on your device using Tendril's local encrypted keyring:
+        </p>
+        <pre><code># Initialize your local vault
+tendril vault init
+
+# Set model provider API keys locally (never transmitted to Ivy servers)
+tendril config set-key anthropic &lt;your-key&gt;
+tendril config set-key openai &lt;your-key&gt;
+tendril config set-key openrouter &lt;your-key&gt;</code></pre>
+        <p>
+          For HTTP daemon authentication, the daemon issues local Bearer tokens scoped to <code>plans:read</code>, <code>plans:write</code>, <code>worktrees:read</code>, and <code>worktrees:write</code>.
+          Inspect discovery metadata at <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/oauth-authorization-server">/.well-known/oauth-authorization-server</a>.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Interactive Sandbox & Test Environment</h2>
+      <div class="card">
+        <h3>Safe Agent Testing with Mock Daemon</h3>
+        <p>
+          Test your agent workflows, MCP integrations, and plan execution loops without touching real repositories or burning LLM tokens:
+        </p>
+        <pre><code># Start Tendril daemon in sandbox mode:
+tendril run --sandbox
+
+# Access sandbox endpoints on port 5010:
+curl -s http://127.0.0.1:5010/sandbox/plans</code></pre>
+        <p>
+          In sandbox mode:
+        </p>
+        <ul>
+          <li>All git worktrees are ephemeral and created in temporary memory directories.</li>
+          <li>Verification test runners execute deterministic mock suites (unit, lint, visual).</li>
+          <li>Agent responses can be replayed from pre-recorded deterministic fixtures.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Machine-Readable APIs & Specifications</h2>
+      <p>Agents and automated tools can fetch structured definitions directly:</p>
+      <ul>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.json">OpenAPI 3.1.0 JSON Specification</a> — Complete REST API schemas and operation IDs.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.yaml">OpenAPI 3.1.0 YAML Specification</a> — YAML format for Swagger/Postman tooling.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/mcp.json">MCP Discovery Manifest</a> — Model Context Protocol capabilities and tools.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/llms.txt">llms.txt Guidance</a> — Curated project instructions and constraints for LLMs.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/llms-full.txt">llms-full.txt</a> — Complete full-text documentation bundle.</li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/api/v1/error.json">Typed RFC 9457 Error Sample</a> — Structured error model with error codes and remediation hints.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>REST Rate Limits & Deprecation Policy</h2>
+      <h3>Rate Limiting Conventions</h3>
+      <p>
+        Tendril daemon APIs enforce standard rate limits to protect local system resources.
+        Every response includes RFC rate-limit headers:
+      </p>
+      <ul>
+        <li><code>RateLimit-Limit</code>: Allowed requests in window (default: 120 req/min).</li>
+        <li><code>RateLimit-Remaining</code>: Remaining capacity in current window.</li>
+        <li><code>RateLimit-Reset</code>: Seconds until quota window resets.</li>
+        <li><code>Retry-After</code>: Returned on HTTP 429 indicating seconds to wait before retry.</li>
+      </ul>
+
+      <h3>API Versioning & Deprecation Policy</h3>
+      <p>
+        Tendril APIs follow explicit URL versioning (current: <code>/api/v1</code>).
+        When an endpoint is deprecated:
+      </p>
+      <ul>
+        <li>Responses return the RFC 8594 <code>Deprecation: @&lt;timestamp&gt;</code> header.</li>
+        <li>The retirement date is signaled with the <code>Sunset: &lt;date&gt;</code> header.</li>
+        <li>Deprecated endpoints remain functional for a minimum <strong>180-day grace period</strong> before sunset.</li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2026 Ivy Interactive AB. Strandvägen 7A, 114 56 Stockholm, Sweden. Contact: <a href="mailto:support@ivy.app">support@ivy.app</a>.</p>
+  </footer>
+</body>
+</html>

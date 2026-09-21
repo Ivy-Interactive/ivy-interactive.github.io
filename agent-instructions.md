@@ -35,6 +35,14 @@ Reach for Ivy Tendril when you need to:
   - `GET /api/v1/worktrees` — Inspect active git worktrees and git status.
   - `WS /api/v1/events` — Stream real-time agent output and terminal transcripts.
 
+- **Via Developer Portal & OpenAPI**:
+  Explore interactive endpoints, schemas, and typed error models at [Developer Portal](https://ivy-interactive.github.io/Ivy-Tendril-V2/developers) and [OpenAPI 3.1.0 Spec](https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.json).
+
+- **Onboarding & Authentication**:
+  - **100% Free & Source-Available**: Licensed under FSL-1.1-ALv2. No credit cards, trial expirations, or sales forms.
+  - **Self-Serve API Keys**: Local keyring/vault authentication via `tendril vault init` and `tendril config set-key`.
+  - **Sandbox / Test Environment**: Run `tendril run --sandbox` or connect to `http://127.0.0.1:5010/sandbox` for mock plans and risk-free testing.
+
 ## When NOT to use this
 
 - Do NOT use Tendril for simple single-file quick edits where agent orchestration, isolated git worktrees, and automated verification loops are unnecessary.
@@ -42,6 +50,7 @@ Reach for Ivy Tendril when you need to:
 
 ## Key Documentation & Links
 
+- [Developer Portal](https://ivy-interactive.github.io/Ivy-Tendril-V2/developers): Quickstart, API keys, sandbox environment, and API schemas.
 - [Introduction](https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction): Overview of Tendril architecture, concepts, and developer workflow.
 - [Installation](https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/installation): Installing desktop app (`.pkg`, `.exe`, `.AppImage`), Rust daemon, and CLI prerequisites.
 - [Onboarding](https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/onboarding): First-time setup, repository selection, and project initialization.
@@ -53,6 +62,7 @@ Reach for Ivy Tendril when you need to:
 - [CLI Reference](https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/cli/overview): Command syntax and options for the `tendril` CLI.
 - [REST & WebSocket API](https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/rest): Complete REST endpoint documentation and WebSocket event schemas.
 - [MCP Server](https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp): Model Context Protocol setup and tool definitions.
+- [OpenAPI Specification](https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.json): Full OpenAPI 3.1.0 schema with RFC 9457 error models and rate limit headers.
 
 ## Full Context Document
 
