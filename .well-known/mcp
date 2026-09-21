@@ -1,0 +1,25 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp-server.json",
+  "name": "tendril-mcp",
+  "version": "2.0.0",
+  "description": "Ivy Tendril Model Context Protocol server for autonomous agent orchestration, plan lifecycles, and git worktree management",
+  "vendor": "Ivy Interactive",
+  "homepage": "https://ivy-interactive.github.io/Ivy-Tendril-V2",
+  "documentation": "https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp",
+  "transport": {
+    "type": "stdio",
+    "command": "tendril",
+    "args": [
+      "mcp"
+    ]
+  },
+  "capabilities": {
+    "tools": true,
+    "prompts": true,
+    "resources": true
+  },
+  "endpoints": {
+    "streamable_http": "http://127.0.0.1:5010/mcp"
+  },
+  "repository": "https://github.com/Ivy-Interactive/Ivy-Tendril-V2"
+}

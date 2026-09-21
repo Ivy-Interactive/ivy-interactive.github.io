@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy · Ivy Tendril</title>
+  <meta name="description" content="Privacy policy and data governance practices for Ivy Tendril desktop app and documentation.">
+  <link rel="canonical" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/privacy">
+  <meta property="og:title" content="Privacy Policy · Ivy Tendril">
+  <meta property="og:description" content="Ivy Tendril local-first architecture and privacy commitments.">
+  <meta property="og:image" content="https://ivy-interactive.github.io/Ivy-Tendril-V2/og-image.png">
+  <meta property="og:type" content="website">
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #ffffff; }
+    h1, h2, h3 { color: #111827; }
+    a { color: #2563eb; text-decoration: underline; text-underline-offset: 3px; }
+    nav a { margin-right: 1rem; font-weight: 500; }
+    header { border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+    footer { border-top: 1px solid #e5e7eb; padding-top: 1.5rem; margin-top: 3rem; font-size: 0.875rem; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/">Home</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction">Documentation</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/about">About</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/contact">Contact</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/privacy">Privacy Policy</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/llms.txt">llms.txt</a>
+    </nav>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: September 21, 2026</p>
+  </header>
+  <main>
+    <section>
+      <h2>1. Local-First Architecture</h2>
+      <p>
+        Ivy Tendril is built on a strict local-first privacy model. Your source code, git branches, plans, promptware definitions,
+        and agent transcripts reside exclusively on your local machine in your working directory and the <code>~/.tendril/</code> folder.
+        Tendril does not upload your repository source files, diffs, or project secrets to external Ivy servers.
+      </p>
+    </section>
+    <section>
+      <h2>2. Bring Your Own LLM Keys (BYO Keys)</h2>
+      <p>
+        When you configure model providers (such as Anthropic Claude, OpenAI, Google Gemini, OpenRouter, or European sovereign providers
+        like Berget and Evroc), your API keys and credentials are stored securely in your local operating system keyring and encrypted
+        vault. Model API requests are transmitted directly from your local machine to the chosen model provider's API endpoint over HTTPS.
+        Ivy Interactive does not proxy, log, or inspect your model API traffic.
+      </p>
+    </section>
+    <section>
+      <h2>3. Documentation Website & GitHub Pages</h2>
+      <p>
+        This documentation website is statically hosted on GitHub Pages. Standard web server logs (IP address, user agent, and requested URLs)
+        may be processed by GitHub pursuant to GitHub's Privacy Statement. No third-party behavioral ad trackers or invasive analytics cookies
+        are embedded on our documentation pages.
+      </p>
+    </section>
+    <section>
+      <h2>4. GDPR and Data Subject Rights</h2>
+      <p>
+        In accordance with Regulation (EU) 2016/679 (GDPR), you retain full ownership and control over your personal data. Because Tendril
+        operates locally on your device, you have complete power to export, modify, or permanently delete your local database and transcripts
+        at any time by deleting <code>~/.tendril</code>.
+      </p>
+      <p>
+        For inquiries regarding privacy practices or data subject requests, please contact our Data Protection Officer at
+        <a href="mailto:privacy@ivy.app">privacy@ivy.app</a>.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2026 Ivy Interactive AB. Registered in Sweden.</p>
+  </footer>
+</body>
+</html>
