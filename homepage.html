@@ -149,5 +149,31 @@
   <footer>
     <p>&copy; 2026 Ivy Interactive AB. All rights reserved. Registered office: Strandvägen 7A, 114 56 Stockholm, Sweden.</p>
   </footer>
+  <script>
+    if (typeof document !== 'undefined') {
+      const register = (tool) => {
+        try {
+          if (document.modelContext && typeof document.modelContext.registerTool === 'function') {
+            document.modelContext.registerTool(tool);
+          } else if (typeof navigator !== 'undefined' && navigator.modelContext && typeof navigator.modelContext.registerTool === 'function') {
+            navigator.modelContext.registerTool(tool);
+          }
+        } catch (e) {}
+      };
+      register({
+        name: "tendril_mcp_info",
+        description: "Retrieve Ivy Tendril agent orchestration tools, MCP manifest, and daemon endpoints.",
+        parameters: { type: "object", properties: {} },
+        execute: async () => ({
+          mcp_endpoint: "http://127.0.0.1:5010/mcp",
+          docs_url: "https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction",
+          status: "ready"
+        })
+      });
+    }
+  </script>
+  <form toolname="tendril_search_docs" tooldescription="Search Ivy Tendril documentation and architecture guide" action="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction" method="get" style="display:none">
+    <input name="q" type="text" placeholder="Search Tendril docs..." />
+  </form>
 </body>
 </html>
