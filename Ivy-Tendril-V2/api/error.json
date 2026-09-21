@@ -1,0 +1,10 @@
+{
+  "type": "https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/rest#errors",
+  "title": "Not Found",
+  "status": 404,
+  "code": "RESOURCE_NOT_FOUND",
+  "message": "The requested resource could not be found on the Tendril daemon or documentation.",
+  "detail": "The requested path does not match any registered API route, static documentation page, or plan entity.",
+  "hint": "Query GET /api/v1/plans or inspect the OpenAPI 3.1.0 specification at /openapi.json and the Developer Portal at /developers.",
+  "documentation_url": "https://ivy-interactive.github.io/Ivy-Tendril-V2/developers"
+}

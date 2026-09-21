@@ -1,0 +1,72 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Ivy Interactive",
+    "url": "https://ivy-interactive.github.io/Ivy-Tendril-V2"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:ivy-interactive.github.io:mcp:tendril",
+      "displayName": "Ivy Tendril MCP Server",
+      "type": "application/mcp-server+json",
+      "url": "http://127.0.0.1:5010/mcp",
+      "description": "Model Context Protocol server for Tendril autonomous agent orchestration, plan lifecycles, and git worktree management.",
+      "representativeQueries": [
+        "Connect to Tendril MCP server",
+        "Run autonomous coding agents in worktrees",
+        "Create an execution plan in Tendril",
+        "Run automated verification gates"
+      ]
+    },
+    {
+      "identifier": "urn:air:ivy-interactive.github.io:api:openapi",
+      "displayName": "Ivy Tendril Daemon OpenAPI Specification",
+      "type": "application/openapi+json",
+      "url": "https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.json",
+      "description": "OpenAPI 3.1.0 specification with typed RFC 9457 error models and standard rate-limiting headers.",
+      "representativeQueries": [
+        "Tendril REST API documentation",
+        "Submit plan via API",
+        "List active worktrees",
+        "Inspect daemon endpoints"
+      ]
+    },
+    {
+      "identifier": "urn:air:ivy-interactive.github.io:portal:developers",
+      "displayName": "Ivy Tendril Developer Portal",
+      "type": "text/html",
+      "url": "https://ivy-interactive.github.io/Ivy-Tendril-V2/developers",
+      "description": "Developer quickstart, self-serve keyring vault API keys, local sandbox daemon instructions, and API deprecation policies.",
+      "representativeQueries": [
+        "Tendril developer portal",
+        "Tendril API keys",
+        "Tendril sandbox testing",
+        "Tendril SDK quickstart"
+      ]
+    },
+    {
+      "identifier": "urn:air:ivy-interactive.github.io:doc:llms-txt",
+      "displayName": "Ivy Tendril Agent Guidelines (llms.txt)",
+      "type": "text/markdown",
+      "url": "https://ivy-interactive.github.io/Ivy-Tendril-V2/llms.txt",
+      "description": "Concise machine-readable guide, quickstart, CLI tool usage, and links for LLM agents.",
+      "representativeQueries": [
+        "How to use Ivy Tendril",
+        "Tendril CLI commands",
+        "Tendril agent instructions"
+      ]
+    },
+    {
+      "identifier": "urn:air:ivy-interactive.github.io:doc:getting-started",
+      "displayName": "Ivy Tendril Getting Started & Setup Guide",
+      "type": "text/html",
+      "url": "https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction",
+      "description": "Official documentation covering architecture, installation, onboarding, and first plan walkthrough.",
+      "representativeQueries": [
+        "Install Ivy Tendril",
+        "Tendril setup guide",
+        "Tendril onboarding tutorial"
+      ]
+    }
+  ]
+}

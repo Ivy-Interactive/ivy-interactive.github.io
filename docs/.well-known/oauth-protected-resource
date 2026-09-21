@@ -1,0 +1,15 @@
+{
+  "resource": "http://127.0.0.1:5010",
+  "authorization_servers": [
+    "https://ivy.app"
+  ],
+  "scopes_supported": [
+    "plans:read",
+    "plans:write",
+    "worktrees:read",
+    "worktrees:write"
+  ],
+  "bearer_methods_supported": [
+    "header"
+  ]
+}

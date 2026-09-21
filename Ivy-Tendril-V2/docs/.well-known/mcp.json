@@ -1,0 +1,162 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/mcp-server.json",
+  "name": "tendril-mcp",
+  "version": "2.0.0",
+  "description": "Ivy Tendril Model Context Protocol server for autonomous agent orchestration, plan lifecycles, and git worktree management",
+  "vendor": "Ivy Interactive",
+  "homepage": "https://ivy-interactive.github.io/Ivy-Tendril-V2",
+  "documentation": "https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp",
+  "transport": {
+    "type": "streamable-http",
+    "url": "http://127.0.0.1:5010/mcp",
+    "command": "tendril",
+    "args": [
+      "mcp"
+    ]
+  },
+  "capabilities": {
+    "tools": true,
+    "prompts": true,
+    "resources": true
+  },
+  "endpoints": {
+    "streamable_http": "http://127.0.0.1:5010/mcp",
+    "sse": "http://127.0.0.1:5010/mcp/events"
+  },
+  "tools": [
+    {
+      "name": "plan_list",
+      "description": "List all plans in the active workspace filtered by status.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "Draft",
+              "Approved",
+              "Running",
+              "Completed",
+              "Failed",
+              "Icebox"
+            ],
+            "description": "Filter plans by execution state"
+          },
+          "limit": {
+            "type": "integer",
+            "default": 50,
+            "description": "Maximum number of plans to return"
+          }
+        }
+      }
+    },
+    {
+      "name": "plan_get",
+      "description": "Retrieve complete plan details, annotations, and verification run status.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique plan identifier (ULID or slug)"
+          }
+        }
+      }
+    },
+    {
+      "name": "plan_create",
+      "description": "Create a new execution plan for an autonomous coding agent.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Short title of the plan or feature"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed specification or prompt for the agent"
+          },
+          "agent": {
+            "type": "string",
+            "enum": [
+              "claude-code",
+              "codex",
+              "copilot",
+              "opencode",
+              "gemini"
+            ],
+            "description": "Agent engine to execute this plan"
+          }
+        }
+      }
+    },
+    {
+      "name": "plan_run",
+      "description": "Trigger execution of an approved plan in an isolated git worktree.",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Plan identifier to execute"
+          },
+          "verification_profile": {
+            "type": "string",
+            "description": "Verification profile to enforce upon completion (e.g., standard, strict)"
+          }
+        }
+      }
+    },
+    {
+      "name": "worktree_list",
+      "description": "List all active isolated git worktrees.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "clean_only": {
+            "type": "boolean",
+            "description": "Only return clean worktrees without unstaged changes"
+          }
+        }
+      }
+    },
+    {
+      "name": "verification_run",
+      "description": "Run automated verification gates (compiler, linter, tests, visual screenshots).",
+      "inputSchema": {
+        "type": "object",
+        "required": [
+          "plan_id"
+        ],
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "description": "Plan identifier associated with the worktree"
+          },
+          "suite": {
+            "type": "string",
+            "enum": [
+              "all",
+              "unit",
+              "lint",
+              "visual"
+            ],
+            "default": "all",
+            "description": "Verification test suite to execute"
+          }
+        }
+      }
+    }
+  ],
+  "repository": "https://github.com/Ivy-Interactive/Ivy-Tendril-V2"
+}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivy Tendril · Model Context Protocol (MCP) Server</title>
+  <meta name="description" content="Connect AI coding agents to Tendril via Model Context Protocol (MCP). Control plans, worktrees, and verification gates programmatically.">
+  <link rel="canonical" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp">
+  <link rel="alternate" type="text/markdown" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/mcp/index.md" title="MCP Markdown">
+  <link rel="ard" type="application/json" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/ard.json">
+  <link rel="ai-catalog" type="application/json" href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/ai-catalog.json">
+  <meta property="og:title" content="Ivy Tendril MCP Server">
+  <meta property="og:description" content="Model Context Protocol tools and configuration for Ivy Tendril autonomous software factory.">
+  <meta property="og:image" content="https://ivy-interactive.github.io/Ivy-Tendril-V2/og-image.png">
+  <meta property="og:type" content="website">
+  <meta http-equiv="refresh" content="2;url=https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp">
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.6; max-width: 850px; margin: 0 auto; padding: 2rem 1rem; color: #1f2937; background: #ffffff; }
+    h1, h2, h3 { color: #111827; }
+    h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    h2 { font-size: 1.4rem; font-weight: 700; margin-top: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1.25rem; }
+    a { color: #2563eb; text-decoration: underline; text-underline-offset: 3px; }
+    nav a { margin-right: 1.25rem; font-weight: 500; }
+    header { border-bottom: 1px solid #e5e7eb; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+    pre { background: #f3f4f6; padding: 1rem; border-radius: 6px; overflow-x: auto; font-family: monospace; font-size: 0.9rem; border: 1px solid #e5e7eb; }
+    code { background: #f3f4f6; padding: 0.15rem 0.35rem; border-radius: 4px; font-family: monospace; font-size: 0.9em; }
+    .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.25rem; margin: 1.25rem 0; }
+    table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+    th, td { text-align: left; padding: 0.75rem; border-bottom: 1px solid #e5e7eb; }
+    th { background: #f9fafb; font-weight: 600; }
+    footer { border-top: 1px solid #e5e7eb; padding-top: 1.5rem; margin-top: 3rem; font-size: 0.875rem; color: #6b7280; }
+  </style>
+</head>
+<body>
+  <header>
+    <nav aria-label="Main Navigation">
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/">Home</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers">Developer Portal</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/gettingstarted/introduction">Documentation</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/llms.txt">llms.txt</a>
+      <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/sitemap.xml">Sitemap</a>
+    </nav>
+    <h1>Ivy Tendril MCP Server</h1>
+    <p>Connect Claude, ChatGPT, and custom orchestrators directly to Tendril's agentic execution engine.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Connection Options</h2>
+      <div class="card">
+        <h3>1. Standard I/O (stdio)</h3>
+        <pre><code>tendril mcp</code></pre>
+      </div>
+      <div class="card">
+        <h3>2. Streamable HTTP / Server-Sent Events</h3>
+        <p>Endpoint: <code>http://127.0.0.1:5010/mcp</code></p>
+        <p>Discovery manifest: <a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/mcp.json">/.well-known/mcp.json</a></p>
+      </div>
+      <div class="card">
+        <h3>Claude Desktop / Claude Code Configuration</h3>
+        <pre><code>{
+  "mcpServers": {
+    "tendril": {
+      "command": "tendril",
+      "args": ["mcp"]
+    }
+  }
+}</code></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Available Tools</h2>
+      <table>
+        <thead>
+          <tr><th>Tool</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>plan_list</code></td><td>List all plans in active workspace filtered by status.</td></tr>
+          <tr><td><code>plan_get</code></td><td>Retrieve complete plan details, annotations, and verification status.</td></tr>
+          <tr><td><code>plan_create</code></td><td>Create a new execution plan for an autonomous coding agent.</td></tr>
+          <tr><td><code>plan_run</code></td><td>Trigger execution of an approved plan in an isolated git worktree.</td></tr>
+          <tr><td><code>worktree_list</code></td><td>List all active isolated git worktrees.</td></tr>
+          <tr><td><code>verification_run</code></td><td>Run automated compiler, linter, unit test, and visual verification gates.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Documentation & Resources</h2>
+      <ul>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/docs/advanced/mcp">Complete MCP Documentation</a></li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/.well-known/mcp.json">MCP Manifest (JSON Schema)</a></li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/developers">Developer Portal</a></li>
+        <li><a href="https://ivy-interactive.github.io/Ivy-Tendril-V2/openapi.json">OpenAPI 3.1.0 Specification</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2026 Ivy Interactive AB. All rights reserved.</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,11 @@
+[
+  {
+    "id": "plan-mock-1",
+    "title": "Example Autonomous Worktree Plan",
+    "state": "Draft",
+    "branch": "feat/mock-plan",
+    "annotations": [
+      "Generated for agent API discovery"
+    ]
+  }
+]
